@@ -20,9 +20,14 @@ Usuario.init(
             unique: true,
             validate: {
                 isEmail: {
-                    msg: "El email no tiene el formato correcto."
-                }
-            }
+                    msg: "El email no tiene el formato correcto.",
+                },
+            },
+            set(value) {
+                //estandarizamos de los emails
+                let email = value.toLowerCase().trim();
+                this.setDataValue("email", email);
+            },
         },
         password: {
             type: DataTypes.STRING(255),
@@ -51,6 +56,6 @@ Usuario.init(
 );
 
 // Para sincronizar de forma segura sin alterar la tabla:
-Usuario.sync({force: false, alter:false});
+Usuario.sync({ force: false, alter: false });
 
-export default Usuario
+export default Usuario;
