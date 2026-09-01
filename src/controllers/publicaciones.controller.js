@@ -1,5 +1,6 @@
 import Publicacion from "../models/Publicacion.model.js";
 import Usuario from "../models/Usuario.model.js";
+import Comentario from "../models/Comentario.model.js";
 import sequelize from "../config/database.js";
 
 export const crearPublicacion = async (req, res) => {
@@ -81,19 +82,19 @@ export const obtenerTodasPublicaciones = async (req, res) => {
                 "titulo",
                 "contenido",
                 "usuarioId",
-                "createdAt",
-                "updatedAt",
+                "fecha_creacion",
+                "fecha_actualizacion",
             ],
             include: [
                 {
                     model: Usuario,
-                    as: "usuario",
+                    as: "autor",
                     attributes: ["id", "nombre", "email"],
                 },
             ],
             offset: isNaN(Number(offset)) ? undefined : offset,
             limit: isNaN(Number(limit)) ? undefined : limit,
-            order: order.length > 0 ? order : [["createdAt", "DESC"]],
+            order: order.length > 0 ? order : [["fecha_creacion", "DESC"]],
         });
 
         res.json({
@@ -119,18 +120,23 @@ export const obtenerPublicacionPorId = async (req, res) => {
                 "id",
                 "titulo",
                 "contenido",
-                "usuarioId",
-                "createdAt",
-                "updatedAt",
+                "fecha_creacion",
+                "fecha_actualizacion",
             ],
             include: [
                 {
                     model: Usuario,
-                    as: "usuario",
+                    as: "autor",
                     attributes: ["id", "nombre", "email"],
                 },
+                {
+                    model: Comentario,
+                    as: "comentarios",
+                    order: [["fecha_actualizacion", "DESC"]]
+                }
             ],
         });
+
 
         if (!publicacion) {
             return res.status(404).json({
@@ -139,9 +145,15 @@ export const obtenerPublicacionPorId = async (req, res) => {
             });
         }
 
+        const publicacionJson = publicacion.toJSON();
+        publicacionJson.fechaCreacion = publicacion.fecha_creacion;
+        publicacionJson.fechaActualizacion = publicacion.fecha_actualizacion;
+        delete publicacionJson.fecha_creacion;
+        delete publicacionJson.fecha_actualizacion;
+
         res.json({
             status: "Ok",
-            publicacion,
+            publicacion: publicacionJson,
         });
     } catch (error) {
         console.error(error);

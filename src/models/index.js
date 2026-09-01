@@ -15,7 +15,7 @@ Usuario.hasMany(Publicacion, {
 Publicacion.belongsTo(Usuario, {
     foreignKey: "usuarioId",
     targetKey: "id",
-    as: "usuario",
+    as: "autor",
 });
 
 // Un Usuario tiene muchos Comentarios
@@ -29,7 +29,7 @@ Usuario.hasMany(Comentario, {
 Comentario.belongsTo(Usuario, {
     foreignKey: "usuarioId",
     targetKey: "id",
-    as: "usuario",
+    as: "autor",
 });
 
 // Una Publicación tiene muchos Comentarios

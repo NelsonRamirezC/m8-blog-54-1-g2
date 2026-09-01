@@ -57,7 +57,7 @@ export const crearComentario = async (req, res) => {
                 contenido: comentario.contenido,
                 usuarioId: comentario.usuarioId,
                 publicacionId: comentario.publicacionId,
-                createdAt: comentario.createdAt,
+                fechaCreacion: comentario.fecha_creacion,
             },
         });
     } catch (error) {
