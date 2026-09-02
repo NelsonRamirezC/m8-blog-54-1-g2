@@ -58,3 +58,28 @@ export const getUsuariosById = async (req, res) => {
         });
     }
 };
+
+
+export const getAvatarById = async (req, res) => {
+    try {
+        let {id} = req.params;
+
+        let usuario = await Usuario.findByPk(id, {
+            attributes: ["imagenAvatar", "mimetype"]
+        })
+
+        if(!usuario || !usuario.imagenAvatar){
+            return res.status(404).send("No existe avatar para usuario id: " + id);
+        }
+
+        res.set("Content-Type", usuario.mimetype);
+        res.send(usuario.imagenAvatar);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno del servidor.",
+        });
+    }
+}

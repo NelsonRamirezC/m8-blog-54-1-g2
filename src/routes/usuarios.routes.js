@@ -10,6 +10,9 @@ router.get("/", usuariosControllers.getAllUsuarios);
 //RUTA OBTENER USUARIOS POR SU ID
 router.get("/:id", usuariosControllers.getUsuariosById);
 
+//RUTA PARA OBTENER IMAGEN DE AVATAR USUARIO POR ID
+
+router.get("/:id/avatar", usuariosControllers.getAvatarById);
 
 
 export default router;

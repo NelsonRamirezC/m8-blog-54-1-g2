@@ -16,12 +16,30 @@ export const registroUsuario = async (req, res) => {
             });
         }
 
+        let imagenAvatar = undefined;
+        let mimetype = undefined
+
+        if(req.files && req.files.avatar){
+
+            const formatosPermitidos = ["image/jpg", "image/jpeg", "image/svg", "image/webp"];
+            imagenAvatar = req.files.avatar.data;
+            mimetype = req.files.avatar.mimetype;
+
+            if(!formatosPermitidos.includes(mimetype)){
+                await t.rollback();
+                return res.status(400).json({status:"fail", message: "Formato de imagen no permitido."});
+            }
+        }
+
         const [usuario, created] = await Usuario.findOrCreate({
             where: { email },
             defaults: {
                 nombre,
                 email,
                 password,
+                imagenAvatar,
+                mimetype
+
             },
             transaction: t,
         });
