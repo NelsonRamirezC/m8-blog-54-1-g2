@@ -43,6 +43,15 @@ Usuario.init(
             allowNull: false,
             defaultValue: true,
         },
+        imagenAvatar: {
+            type: DataTypes.BLOB("medium"),
+            allowNull: true,
+            field: "imagen_avatar"
+        },
+        mimetype: {
+            type: DataTypes.STRING(50),
+            allowNull: true
+        }
     },
     {
         sequelize,
@@ -52,6 +61,7 @@ Usuario.init(
         timestamps: true, // Habilita timestamps automáticos
         createdAt: "fecha_creacion", // Mapea a tu columna fecha_creacion
         updatedAt: "fecha_actualizacion", // Mapea a tu columna fecha_actualizacion
+        underscored: true
     },
 );
 
