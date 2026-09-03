@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | Blog</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --ink: #17231f;
+            --muted: #63716b;
+            --paper: #f5f1e8;
+            --surface: #fffdf8;
+            --line: #d9dfd4;
+            --accent: #d75b3e;
+            --accent-dark: #a43b28;
+            --green: #284b3e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        body::before {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            content: '';
+            opacity: .35;
+            background-image: linear-gradient(rgba(40, 75, 62, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(40, 75, 62, .06) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .page {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 60px 0 72px;
+        }
+
+        .masthead {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            color: var(--accent-dark);
+            font: 500 12px 'DM Mono', monospace;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 650px;
+            margin: 0;
+            font-size: clamp(2.5rem, 6vw, 5.4rem);
+            line-height: .92;
+            letter-spacing: -.05em;
+        }
+
+        .summary {
+            flex: 0 0 auto;
+            padding: 14px 18px;
+            border: 1px solid var(--green);
+            color: var(--surface);
+            background: var(--green);
+            font: 500 13px 'DM Mono', monospace;
+        }
+
+        .summary strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 27px;
+        }
+
+        .table-shell {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            box-shadow: 12px 12px 0 rgba(40, 75, 62, .12);
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            color: var(--muted);
+            background: #edf0e8;
+            font: 500 11px 'DM Mono', monospace;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        tbody tr {
+            transition: background-color .2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f7f3ea;
+        }
+
+        .avatar {
+            display: block;
+            width: 52px;
+            height: 52px;
+            border: 2px solid var(--surface);
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e3e8de;
+            box-shadow: 0 0 0 1px var(--line);
+        }
+
+        .user-id {
+            color: var(--muted);
+            font: 400 13px 'DM Mono', monospace;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-email {
+            color: var(--muted);
+        }
+
+        .status {
+            padding: 48px 24px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .status[hidden] {
+            display: none;
+        }
+
+        .error {
+            color: var(--accent-dark);
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                width: min(100% - 24px, 1180px);
+                padding-top: 32px;
+            }
+
+            .masthead {
+                display: block;
+                margin-bottom: 24px;
+            }
+
+            h1 {
+                font-size: clamp(2.7rem, 17vw, 4.5rem);
+            }
+
+            .summary {
+                display: inline-block;
+                margin-top: 22px;
+            }
+
+            .table-shell {
+                box-shadow: 6px 6px 0 rgba(40, 75, 62, .12);
+            }
+
+            th,
+            td {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header class="masthead">
+            <div>
+                <p class="eyebrow">Directorio del blog</p>
+                <h1>Personas<br>que escriben.</h1>
+            </div>
+            <div class="summary" aria-live="polite">
+                Usuarios registrados
+                <strong id="user-count">--</strong>
+            </div>
+        </header>
+
+        <section class="table-shell" aria-label="Lista de usuarios">
+            <div id="loading" class="status">Cargando usuarios...</div>
+            <div id="error" class="status error" hidden>No fue posible cargar los usuarios.</div>
+            <div id="empty" class="status" hidden>No hay usuarios registrados.</div>
+            <div class="table-scroll" id="table-container" hidden>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Correo electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const defaultAvatar = '/assets/img/default-avatar.png';
+        const loading = document.querySelector('#loading');
+        const error = document.querySelector('#error');
+        const empty = document.querySelector('#empty');
+        const tableContainer = document.querySelector('#table-container');
+        const tableBody = document.querySelector('#users-table-body');
+        const userCount = document.querySelector('#user-count');
+
+        function createCell(content, className = '') {
+            const cell = document.createElement('td');
+            cell.textContent = content ?? 'Sin información';
+            if (className) cell.className = className;
+            return cell;
+        }
+
+        function renderUsers(users, total) {
+            userCount.textContent = total ?? users.length;
+            tableBody.replaceChildren();
+
+            users.forEach((user) => {
+                const row = document.createElement('tr');
+                const avatarCell = document.createElement('td');
+                const avatar = document.createElement('img');
+                avatar.className = 'avatar';
+                avatar.src = user.rutaImagen || defaultAvatar;
+                avatar.alt = `Avatar de ${user.nombre || 'usuario'}`;
+                avatar.onerror = () => {
+                    avatar.onerror = null;
+                    avatar.src = defaultAvatar;
+                };
+                avatarCell.appendChild(avatar);
+                row.append(avatarCell, createCell(user.id, 'user-id'), createCell(user.nombre, 'user-name'), createCell(user.email, 'user-email'));
+                tableBody.appendChild(row);
+            });
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/usuarios');
+                if (!response.ok) throw new Error('Error de respuesta');
+                const data = await response.json();
+                const users = Array.isArray(data.usuarios) ? data.usuarios : [];
+                renderUsers(users, data.totalUsuariosDB);
+                loading.hidden = true;
+                if (users.length) tableContainer.hidden = false;
+                else empty.hidden = false;
+            } catch (requestError) {
+                loading.hidden = true;
+                error.hidden = false;
+                console.error(requestError);
+            }
+        }
+
+        loadUsers();
+    </script>
+</body>
+
+</html>

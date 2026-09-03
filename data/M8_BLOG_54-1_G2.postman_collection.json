@@ -1,0 +1,284 @@
+{
+  "info": {
+    "_postman_id": "3e80fe9b-8484-41b3-b8a8-63b31695fad2",
+    "name": "M8_BLOG_54-1_G2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12060319"
+  },
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "REGISTRO USUARIO",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "nombre",
+                  "value": "Margarita",
+                  "type": "text",
+                  "uuid": "a4892998-2349-403f-b804-af4da718d699"
+                },
+                {
+                  "key": "email",
+                  "value": "margarita@gmail.com",
+                  "type": "text",
+                  "uuid": "578b233c-b3ee-4193-a51f-091d24cc6b5c"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "9e454877-43da-41f4-bb9d-432e7c95cc5b"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "uuid": "4681c26c-6652-4c8c-aaa7-0ab5bc8d648e",
+                  "src": "/C:/Users/NelsonRamírez/Downloads/avatar.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:3000/auth/registro",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "registro"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LOGIN USUARIO",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "miguel@gmail.com",
+                  "type": "text",
+                  "uuid": "9d85c1ee-de2b-412e-b2d7-408180d6f827"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "41e1fdb0-58ba-4d58-917e-eaf010efb2cf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:3000/auth/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "USUARIOS",
+      "item": [
+        {
+          "name": "GET ALL USUARIOS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET USUARIO BY ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/usuarios/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET AVATAR BY ID",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PUBLICACIONES",
+      "item": [
+        {
+          "name": "GET ALL PUBLICACIONES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/publicaciones",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "publicaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET PUBLICACION BY ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/publicaciones/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "publicaciones",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CREAR PUBLICACIONES",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "titulo",
+                  "value": "Publicacion 1 del usuario 1",
+                  "type": "text",
+                  "uuid": "a68260bb-1bb6-4ad3-bbec-6d04798421ab"
+                },
+                {
+                  "key": "contenido",
+                  "value": "contenido publicacion 1 usuario 1",
+                  "type": "text",
+                  "uuid": "42cf8db1-2b48-43f9-af7d-fb7b90777678"
+                },
+                {
+                  "key": "usuarioId",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "2641ad19-9577-4b95-a7e3-570990bd1c34"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:3000/api/publicaciones",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "publicaciones"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "COMENTARIOS",
+      "item": [
+        {
+          "name": "CREATE COMENTARIOS",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "contenido",
+                  "value": "Me gustó la publicación 1",
+                  "type": "text",
+                  "uuid": "a68260bb-1bb6-4ad3-bbec-6d04798421ab"
+                },
+                {
+                  "key": "publicacionId",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "42cf8db1-2b48-43f9-af7d-fb7b90777678"
+                },
+                {
+                  "key": "usuarioId",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "2641ad19-9577-4b95-a7e3-570990bd1c34"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:3000/api/comentarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "comentarios"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
+app.use(express.static("public"));
+
 //ENDPOINTS DE API
 app.use("/api/usuarios", usuariosRoutes);
 app.use("/api/publicaciones", publicacionesRoutes);
