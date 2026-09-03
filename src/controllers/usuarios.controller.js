@@ -18,13 +18,21 @@ export const getAllUsuarios = async (req, res) => {
         }
         
         const { count, rows } = await Usuario.findAndCountAll({
-            attributes: ["id", "nombre", "email"],
+            attributes: ["id", "nombre", "email", "mimetype"],
             offset: isNaN(Number(offset)) ? undefined : offset,
             limit: isNaN(Number(limit)) ? undefined : limit,
             order
         });
 
-        res.json({ status: "Ok", totalUsuariosDB: count, usuarios:rows });
+
+        const usuarios = rows.map(user => {
+            user = user.toJSON();
+            user.rutaImagen = user.mimetype ? `/api/usuarios/${user.id}/avatar` : null;
+            delete user.mimetype;
+            return user;
+        })
+
+        res.json({ status: "Ok", totalUsuariosDB: count, usuarios });
     } catch (error) {
         console.error(error);
         res.status(500).json({
