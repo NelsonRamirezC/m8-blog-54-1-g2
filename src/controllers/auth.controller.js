@@ -1,6 +1,9 @@
 import Usuario from "../models/Usuario.model.js";
 import sequelize from "../config/database.js";
 import { Op } from "sequelize";
+import jwt from "jsonwebtoken";
+import generateHash from "../utils/generateHash.js";
+import compareHash from "../utils/compareHash.js";
 
 export const registroUsuario = async (req, res) => {
     const t = await sequelize.transaction();
@@ -30,6 +33,8 @@ export const registroUsuario = async (req, res) => {
                 return res.status(400).json({status:"fail", message: "Formato de imagen no permitido."});
             }
         }
+
+        password = await generateHash(password);
 
         const [usuario, created] = await Usuario.findOrCreate({
             where: { email },
@@ -79,9 +84,6 @@ export const loginUsuario = async (req, res) => {
             });
         }
 
-        //op. 1 email de entrada normalizado
-        //email = email.toLowerCase().trim();
-
         const usuario = await Usuario.findOne({
             where: {
                 email: {
@@ -90,11 +92,16 @@ export const loginUsuario = async (req, res) => {
             },
         });
 
-        if (!usuario || usuario.password != password) {
+        const coincidePasswords = await compareHash(password, usuario.password);
+
+        if (!usuario || !coincidePasswords) {
             return res
                 .status(400)
                 .json({ status: "fail", message: "Credenciales inválidas" });
         }
+
+
+        //EMINISIÓN DE TOKEN
 
         res.status(200).json({
             status: "Ok",
