@@ -1,6 +1,7 @@
 const API = "";
 
 const getToken = () => localStorage.getItem("blog_token");
+
 const decodeToken = (token) => {
     try {
         return JSON.parse(
