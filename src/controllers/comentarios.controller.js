@@ -59,3 +59,49 @@ export const crearComentario = async (req, res) => {
         });
     }
 };
+
+export const eliminarComentario = async (req, res) => {
+    const t = await sequelize.transaction();
+    try {
+        let { id } = req.params;
+
+        const comentario = await Comentario.findByPk(id, {
+            include: [
+                {
+                    model: Publicacion,
+                    as: "publicacion",
+                },
+            ],
+            transaction: t,
+        });
+
+        if (!comentario) {
+            await t.rollback();
+            res.status(404).json({
+                status: "Not found",
+                message: "No existe ningún comentario con id:" + id,
+            });
+        }
+
+        //ELIMINAR COMENTARIO
+        if (
+            req.usuario.admin ||
+            comentario.usuarioId == req.usuario.id ||
+            comentario.publicacion.usuarioId == req.usuario.id
+        ) {
+            await comentario.destroy({ transaction: t});
+            await t.commit();
+            return res.status(200).json({status: "success", message: "Comentario eliminado con éxito."});
+        }else {
+
+            return res.status(403).json({ status: "fail", message: "Usted no tiene permisos para eliminar el comentario."});
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno del servidor.",
+        });
+    }
+};
