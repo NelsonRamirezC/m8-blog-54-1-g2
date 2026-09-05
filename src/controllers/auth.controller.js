@@ -90,11 +90,19 @@ export const loginUsuario = async (req, res) => {
                     [Op.iLike]: email,
                 },
             },
+            attributes: { exclude: ["mimetype", "imagenAvatar", "fechaCreacion", "fechaActualizacion"]}
         });
+
+        if (!usuario) {
+            return res.status(404).json({
+                status: "fail",
+                message: "Credenciales inválidas.",
+            });
+        }
 
         const coincidePasswords = await compareHash(password, usuario.password);
 
-        if (!usuario || !coincidePasswords) {
+        if (!coincidePasswords) {
             return res
                 .status(400)
                 .json({ status: "fail", message: "Credenciales inválidas" });
