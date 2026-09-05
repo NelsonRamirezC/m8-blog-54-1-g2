@@ -6,25 +6,15 @@ import sequelize from "../config/database.js";
 export const crearComentario = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        let { contenido, usuarioId, publicacionId } = req.body;
+        let { contenido, publicacionId } = req.body;
 
         // Validar que los campos requeridos estén presentes
-        if (!contenido || !usuarioId || !publicacionId) {
+        if (!contenido || !publicacionId) {
             await t.rollback();
             return res.status(400).json({
                 status: "fail",
                 message:
-                    "No se proporcionaron los campos requeridos [contenido, usuarioId, publicacionId]",
-            });
-        }
-
-        // Verificar que el usuario existe
-        const usuario = await Usuario.findByPk(usuarioId);
-        if (!usuario) {
-            await t.rollback();
-            return res.status(404).json({
-                status: "fail",
-                message: "El usuario especificado no existe",
+                    "No se proporcionaron los campos requeridos [contenido, publicacionId]",
             });
         }
 
@@ -42,7 +32,7 @@ export const crearComentario = async (req, res) => {
         const comentario = await Comentario.create(
             {
                 contenido,
-                usuarioId,
+                usuarioId: req.usuario.id,
                 publicacionId,
             },
             { transaction: t },

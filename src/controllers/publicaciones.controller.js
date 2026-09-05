@@ -122,7 +122,14 @@ export const obtenerPublicacionPorId = async (req, res) => {
                 {
                     model: Comentario,
                     as: "comentarios",
-                    order: [["fecha_actualizacion", "DESC"]]
+                    order: [["fecha_actualizacion", "DESC"]],
+                    include: [
+                        {
+                            model: Usuario,
+                            as: "autor",
+                            attributes: ["id", "nombre", "email"],
+                        }
+                    ]
                 }
             ],
         });
