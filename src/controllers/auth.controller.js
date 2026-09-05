@@ -119,7 +119,7 @@ export const loginUsuario = async (req, res) => {
             admin: usuario.admin
         }
 
-        const token = jwt.sign(data, 'secret', { expiresIn: '2m' });
+        const token = jwt.sign(data, process.env.SECRETO_JWT, { expiresIn: '5m' });
 
         res.status(200).json({
             status: "Ok",

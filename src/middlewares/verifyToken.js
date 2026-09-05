@@ -13,7 +13,7 @@ const verifyToken = async (req, res, next) => {
 
         const token = req.headers.authorization.split(" ")[1];
 
-        const decoded = jwt.verify(token, 'secret');
+        const decoded = jwt.verify(token, process.env.SECRETO_JWT);
 
         const usuario = await Usuario.findByPk(decoded.id);
 
