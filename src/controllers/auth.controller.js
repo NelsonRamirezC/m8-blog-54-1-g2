@@ -101,11 +101,22 @@ export const loginUsuario = async (req, res) => {
         }
 
 
-        //EMINISIÓN DE TOKEN
+        //EMISIÓN DE TOKEN
+
+        const data = {
+            id: usuario.id,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            status: usuario.status,
+            admin: usuario.admin
+        }
+
+        const token = jwt.sign(data, 'secret', { expiresIn: '2m' });
 
         res.status(200).json({
             status: "Ok",
             message: "Login exitoso!",
+            token
         });
     } catch (error) {
         console.error(error);

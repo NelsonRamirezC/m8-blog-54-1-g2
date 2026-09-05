@@ -1,11 +1,12 @@
 import express from "express";
 import * as publicacionesControllers from "../controllers/publicaciones.controller.js";
 import validaBody from "../middlewares/validaBody.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
 // RUTA CREAR UNA PUBLICACIÓN
-router.post("/", validaBody, publicacionesControllers.crearPublicacion);
+router.post("/", validaBody, verifyToken, publicacionesControllers.crearPublicacion);
 
 // RUTA OBTENER TODAS LAS PUBLICACIONES
 router.get("/", publicacionesControllers.obtenerTodasPublicaciones);
