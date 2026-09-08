@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import Usuario from "../models/Usuario.model.js";
 import sequelize from "../config/database.js";
 
