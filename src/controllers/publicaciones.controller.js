@@ -1,6 +1,5 @@
-import Publicacion from "../models/Publicacion.model.js";
-import Usuario from "../models/Usuario.model.js";
-import Comentario from "../models/Comentario.model.js";
+
+import { Publicacion, Usuario, Comentario } from "../models/index.js";
 import sequelize from "../config/database.js";
 
 export const crearPublicacion = async (req, res) => {
